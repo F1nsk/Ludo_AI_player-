@@ -257,6 +257,48 @@ void game::run() {
             next_turn(game_delay - game_delay/4);
         }
     }
+    stats(color);
     emit close();
     QThread::exit();
 }
+
+
+
+
+void  game::stats(int color)
+{
+    if(color == 0 )
+    {
+        winners[0]+=1;
+     }
+    if (color ==1)
+    {
+        winners[1]+=1;
+    }
+    if (color == 2)
+    {
+        winners[2]+=1;
+    }
+    if(color == 3)
+    {
+        winners[3]+=1;
+    }
+}
+
+
+
+
+void game::printStats()
+{
+    std::cout << "p 1 won number of times " << winners[0] << std::endl;
+    std::cout << "p 2 won number of times " << winners[1] << std::endl;
+    std::cout << "p 3 won number of times " << winners[2] << std::endl;
+    std::cout << "p 4 won number of times " << winners[3] << std::endl;
+
+}
+
+
+
+
+
+
