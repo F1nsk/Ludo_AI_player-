@@ -14,8 +14,13 @@ int main(int argc, char *argv[]){
     qRegisterMetaType<positions_and_dice>();
 
     //instanciate the players here
+<<<<<<< HEAD
   //  ludo_evo_player p1;
     ludo_player p1, p2;
+=======
+    ludo_evo_player p1(0);
+    ludo_player p2;
+>>>>>>> 38f774dc64ab026cc5528ffd050c18a7867d5fc1
     ludo_player_random p3, p4;
 
 

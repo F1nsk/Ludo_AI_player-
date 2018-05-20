@@ -5,14 +5,44 @@
 #include <iostream>
 #include <random>
 #include "positions_and_dice.h"
+<<<<<<< HEAD
 #include <vector> 
+=======
+#include <vector>
+>>>>>>> 38f774dc64ab026cc5528ffd050c18a7867d5fc1
 
 
 class ludo_evo_player: public QObject
 {
 
+    struct possibleMoves
+    {
+        int pieceNumber;   // posible moves for the peice with this index
+        // the following parameteres describe wether it is possible to certian moves, is set to 'true' the move is possible and if set to 'false' the move is not possible
+        bool killFoe; 	  //
+        bool moveforward;
+        bool moveToGlobe;
+        bool EnemyIsClose;
+        bool defend;
+        bool leaveHouse;
+        bool moveToGoal;
+        bool moveInGoal;
+        bool moveToStar;
+
+
+
+    };
+
+    struct genome
+    {
+
+
+    };
+
+
     Q_OBJECT
 private:
+<<<<<<< HEAD
 	
 	struct possibleMoves 
 	{
@@ -34,10 +64,15 @@ private:
 	
 	std::vector<int> genes_weights[8]; 
 	void randomizeWeight(); 
+=======
+
+
+>>>>>>> 38f774dc64ab026cc5528ffd050c18a7867d5fc1
     std::vector<int> pos_start_of_turn;
     std::vector<int> pos_end_of_turn;
-    int dice_roll;
-    float weights[];
+    int mycolor;
+    int dice_roll =0;
+   // float weights[];
     int make_decision();
     int currentPos;
     int nextPos;
@@ -45,8 +80,8 @@ private:
     const int goal = 99;
     const int GOAL = 56;
     const int home = -1;
-    vector<int> MyPiecesPos;                   //container for my pieces
-    vector<int> EnemyPiecesPos;                   //container for enemy pieces
+    std::vector<int> MyPiecesPos;                   //container for my pieces
+    std::vector<int> EnemyPiecesPos;                   //container for enemy pieces
 	
     
     // ************************************************************************************************
@@ -66,6 +101,7 @@ private:
     bool friendlyOnfield(int position);
     bool posibleToMoveForward(int peiceNumber); 
     bool posibleToMoveToGlobe(int peiceNumber); 
+    bool isGlobe(int position);
     
      
    
@@ -93,7 +129,7 @@ private:
 
 
 public:
-    ludo_evo_player();
+    ludo_evo_player(int color);
 
 signals:
     void select_piece(int);
@@ -101,6 +137,7 @@ signals:
 public slots:
     void start_turn(positions_and_dice relative);
     void post_game_analysis(std::vector<int> relative_pos);
+
 };
 
 #endif // LUDO_EVO_PLAYER_H
