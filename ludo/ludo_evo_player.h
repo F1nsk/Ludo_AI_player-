@@ -20,7 +20,36 @@ private:
     int make_decision();
     int currentPos;
     int nextPos;
-
+    const int goalStretch = 51;
+    const int goal = 99;
+    const int GOAL = 56;
+    const int home = -1;
+    
+    // ************************************************************************************************
+    // functions  to explore the board 
+    // ************************************************************************************************
+    bool isEnemyBehind(currentPos);  // check is enemy player is within striking range 
+    bool isInGoal(currentPos); // is play in goal stretch 
+    bool canIdefend(currentPos);  //
+    bool canIenterBoard(); //
+    bool posibleToKill(); 
+    bool isPositionBlocked(); // check if two players are already on the spot 
+   
+   
+   
+	// ************************************************************************************************
+	// actions 
+	// ************************************************************************************************
+	void killEnemy(); 
+	void normalMove(); 
+	void defendFriend();
+	void MoveOutofhome(); 
+	void moveToStar(); 
+	void moveToGlobe();  
+	void moveTosafeZone(); 
+	
+	
+	
     //game states as funtions
 
 
