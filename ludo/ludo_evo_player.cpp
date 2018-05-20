@@ -82,42 +82,167 @@ void ludo_evo_player::getPlayersPos()
 	
 }
 
+bool ludo_evo_player::posibleToMoveForward(int peiceNumber) 
+{
+  if (pos_start_of_turn[pieceIndex] == 99)
+        return false;
+    if (pos_start_of_turn[pieceIndex] == -1)
+        return false;
+    if (pos_start_of_turn[pieceIndex] + dice_roll > 51)
+        return false;
+    return true;
+	
+}
+
 
 
   
-bool ludo_evo_player::isEnemyBehind(currentPos)
+bool ludo_evo_player::isEnemyBehind(int peiceNumber)
 {
 }
 
 
-bool ludo_evo_player::isInGoal(currentPos) 
+bool ludo_evo_player::isInGoal(int peiceNumber) 
 {
 	
 }
 
 
-bool ludo_evo_player::canIdefend(currentPos)
+bool ludo_evo_player::canIdefend(int peiceNumber)
+{
+	int end_pos = dice_roll + pos_start_of_turn[peiceNumber];
+    if (end_pos > 51)
+        return false;
+    int noFriends = friendlyOnfield(end_pos);
+    if (noFriends == 1)
+        return true;
+    return false;
+}
+
+bool ludo_evo_player::canIenterBoard(int peiceNumber)
 {
 	
 }
 
-bool ludo_evo_player::canIenterBoard()
+bool ludo_evo_player::posibleToKill(int peiceNumber)
 {
+	  int end_pos = dice_roll + pos_start_of_turn[peiceNumber];
+     if (end_pos > 51)
+     
+         return false;
+     int noEnemies = oppenentOnfield(end_pos);
+     if (noEnemies == 1)
+         if (!(isGlobe(end_pos)))
+            return true;
+     return false;
+	
+	
 	
 }
 
-bool ludo_evo_player::posibleToKill()
+bool ludo_evo_player::isPositionBlocked(int peiceNumber)
 {
-}
-
-bool ludo_evo_player::isPositionBlocked()
-{
+	
+	
+	
+	
 }
  
-vector<vector<bool>  ludo_evo_player::possibleMoveToMake()
+
+
+bool ludo_evo_player::moveToFinish(int peiceNumber)
 {
+	  int end_pos = dice_roll + pos_start_of_turn[peiceNumber];
+    if (pos_start_of_turn[pieceIndex] > 51)
+        return false;
+    if (end_pos > 51)
+        return true;
+    return false;
 }
-   
+	
+	
+	
+	
+}
+
+bool ludo_evo_player::moveInFinish(int peiceNumber)
+{
+	  if (pos_start_of_turn[pieceIndex] > 51)
+    {
+        if (pos_start_of_turn[peiceNumber]+dice_roll == 56 )
+            return false;
+        if (pos_start_of_turn[peiceNumber]+dice_roll < 56)
+            return true;
+    }
+    return false;
+	
+	
+	
+}
+
+
+bool ludo_evo_player::leaveHomePossible(int peiceNumber)
+{
+	if (pos_start_of_turn[peiceNumber] == -1 && dice_roll == 6)
+        return true;
+    return false;
+}
+    
+    
+ bool ludo_evo_player::oppenentOnfield(int position)
+ {
+	 int counter = 0;
+    bool skip = false;
+    for (int i = 4; i < pos_start_of_turn.size(); i++)
+    {
+            if (pos_start_of_turn[i] == position)
+                counter++;
+    }
+    return counter;
+
+
+}
 
 
 
+bool ludo_evo_player::friendlyOnfield(int position)
+{
+	 int counter = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        if (pos_start_of_turn[i] == position)
+            counter++;
+    }
+    return counter;
+}
+
+    
+    
+bool ludo_evo_player:: posibleToMoveToGlobe(int peiceNumber)
+{
+	if (pos_start_of_turn[pieceIndex] == 99)
+        return false;
+    if (pos_start_of_turn[pieceIndex] == -1)
+        return false;
+    if (pos_start_of_turn[pieceIndex] + dice_roll > 51)
+        return false;
+    return true;
+
+	
+}
+
+
+bool ludo_evo_player::isGlobe(int postion)
+{
+	
+	if(postion < 52){     
+        if(postion == 8 || postion == 8+13 || postion == 8+26)
+        {           
+			 return true;
+        }
+    }
+    return false;
+
+
+} 
+    

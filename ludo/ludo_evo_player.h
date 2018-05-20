@@ -22,7 +22,11 @@ private:
 		bool moveToGlobe
 		bool EnemyIsClose 
 		bool defend 
-		bool 
+		bool leaveHouse 
+		bool moveToGoal 
+		bool moveInGoal
+		bool moveToStar 
+		
 		
 		
 	}
@@ -56,6 +60,12 @@ private:
     bool moveToFinish(int peiceNumber); 
     bool moveInFinish(int peiceNumber);
     bool leaveHomePossible(int peiceNumber);
+    bool oppenentOnfield(int position);
+    bool friendlyOnfield(int position);
+    bool posibleToMoveForward(int peiceNumber); 
+    bool posibleToMoveToGlobe(int peiceNumber); 
+    
+     
    
    
 	// ************************************************************************************************
