@@ -5,6 +5,7 @@
 #include <iostream>
 #include <random>
 #include "positions_and_dice.h"
+#include <vector> 
 
 
 class ludo_evo_player: public QObject
@@ -31,7 +32,8 @@ private:
 		
 	}
 	
-
+	std::vector<int> genes_weights[8]; 
+	void randomizeWeight(); 
     std::vector<int> pos_start_of_turn;
     std::vector<int> pos_end_of_turn;
     int dice_roll;

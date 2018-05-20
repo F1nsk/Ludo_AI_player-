@@ -2,6 +2,8 @@
 #define LUDO_PLAYER_RANDOM_H
 #include <QObject>
 #include <iostream>
+#include <cstddef>
+#include <random>
 #include "positions_and_dice.h"
 
 class ludo_player_random : public QObject {

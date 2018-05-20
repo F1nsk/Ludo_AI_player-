@@ -245,4 +245,20 @@ bool ludo_evo_player::isGlobe(int postion)
 
 
 } 
+
+
+void ludo_evo_player::randomizeWeight()
+{
+	for(int i =0; i < genes_weights.length(); i++)
+	{
+		genes_weights[i] = random(0,10); 
+	} 
+	
+	
+	
+}
+
+
+
+
     
