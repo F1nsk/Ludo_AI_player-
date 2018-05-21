@@ -8,6 +8,7 @@
 #include <vector>  
 
 
+
 struct possibleMoves
 {
     int pieceNumber;   // posible moves for the peice with this index
@@ -36,7 +37,7 @@ struct chrom // the chromoson
     float weightDefend = 0.00;
     float weightLeaveHouse = 0.00;
     float weightMoveToGoal = 0.00;
-    float weightMoveImGoal = 0.00;
+    float weightMoveInGoal = 0.00;
     float weightMoveToStar = 0.00;
     float weightFinishPiece = 0.00;
 
@@ -54,7 +55,7 @@ class ludo_evo_player: public QObject
 private:
 
 
-    possibleMoves
+
     std::vector<chrom> population;
 
     std::vector<int> pos_start_of_turn;
@@ -75,7 +76,7 @@ private:
     std::vector<float> playerTwo;
     std::vector<float> playerThree;
     std::vector<float> playFour;
-
+    std::vector<float> scoreKeeper;
 	
     
     // ************************************************************************************************
