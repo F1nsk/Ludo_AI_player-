@@ -5,69 +5,48 @@
 #include <iostream>
 #include <random>
 #include "positions_and_dice.h"
-<<<<<<< HEAD
-#include <vector> 
-=======
-#include <vector>
->>>>>>> 38f774dc64ab026cc5528ffd050c18a7867d5fc1
+#include <vector>  
 
 
+struct possibleMoves
+{
+    int pieceNumber;   // posible moves for the peice with this index
+    // the following parameteres describe wether it is possible to certian moves, is set to 'true' the move is possible and if set to 'false' the move is not possible
+    bool killFoe; 	  //
+    bool moveforward;
+    bool moveToGlobe;
+    //bool EnemyIsClose;
+    bool defend;
+    bool leaveHouse;
+    bool moveToGoal;
+    bool moveInGoal;
+    bool moveToStar;
+    bool finishPiece;
+
+
+
+};
+
+struct chrom
+{
+
+
+
+
+};
 class ludo_evo_player: public QObject
 {
 
-    struct possibleMoves
-    {
-        int pieceNumber;   // posible moves for the peice with this index
-        // the following parameteres describe wether it is possible to certian moves, is set to 'true' the move is possible and if set to 'false' the move is not possible
-        bool killFoe; 	  //
-        bool moveforward;
-        bool moveToGlobe;
-        bool EnemyIsClose;
-        bool defend;
-        bool leaveHouse;
-        bool moveToGoal;
-        bool moveInGoal;
-        bool moveToStar;
 
-
-
-    };
-
-    struct genome
-    {
-
-
-    };
 
 
     Q_OBJECT
 private:
-<<<<<<< HEAD
-	
-	struct possibleMoves 
-	{
-		int pieceNumber   // posible moves for the peice with this index 
-		// the following parameteres describe wether it is possible to certian moves, is set to 'true' the move is possible and if set to 'false' the move is not possible 
-		bool killFoe 	  //  
-		bool moveforward
-		bool moveToGlobe
-		bool EnemyIsClose 
-		bool defend 
-		bool leaveHouse 
-		bool moveToGoal 
-		bool moveInGoal
-		bool moveToStar 
-		
-		
-		
-	}
-	
-	std::vector<int> genes_weights[8]; 
+
+
+    char genes_weights[8];
 	void randomizeWeight(); 
-=======
 
-
->>>>>>> 38f774dc64ab026cc5528ffd050c18a7867d5fc1
     std::vector<int> pos_start_of_turn;
     std::vector<int> pos_end_of_turn;
     int mycolor;
@@ -101,10 +80,15 @@ private:
     bool friendlyOnfield(int position);
     bool posibleToMoveForward(int peiceNumber); 
     bool posibleToMoveToGlobe(int peiceNumber); 
+    bool posibleToMoveToStar(int peiceNumber);
     bool isGlobe(int position);
-    
-     
-   
+    bool endPiece(int pieceIndex);
+    bool isStar(int pieceIndex);
+    possibleMoves exploration(int pieceNumber); // this function finds all the possibel moves and  updates the possibilities list
+    // ************************************************************************************************
+    // debug
+    // ************************************************************************************************
+    void debugPrint(possibleMoves debug);
    
 	// ************************************************************************************************
 	// actions 
@@ -129,7 +113,7 @@ private:
 
 
 public:
-    ludo_evo_player(int color);
+    ludo_evo_player();
 
 signals:
     void select_piece(int);

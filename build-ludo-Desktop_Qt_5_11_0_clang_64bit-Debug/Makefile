@@ -1474,7 +1474,6 @@ main.o: ../ludo/main.cpp ../ludo/dialog.h \
 		../../../../Qt/5.11.0/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
 		../ludo/ludo_player.h \
 		../../../../Qt/5.11.0/clang_64/lib/QtCore.framework/Headers/QObject \
-		../ludo/ludo_evo_player.h \
 		../ludo/ludo_player_random.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../ludo/main.cpp
 

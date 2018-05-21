@@ -1,35 +1,52 @@
 #include "ludo_evo_player.h"
 
-ludo_evo_player::ludo_evo_player(int color):
+ludo_evo_player::ludo_evo_player():
     pos_start_of_turn(16),
     pos_end_of_turn(16),
     dice_roll(0)
-    //mycolor(color)
+
 {
 
 }
 
 
-int ludo_evo_player::make_decision(){
+int ludo_evo_player::make_decision()
+{
+    possibleMoves p1 = exploration(0);
+    possibleMoves p2 = exploration(1);
+    possibleMoves p3 = exploration(2);
+    possibleMoves p4 = exploration(3);
+
+    debugPrint(p1);
+    debugPrint(p2);
+    debugPrint(p3);
+    debugPrint(p4);
+
+
     if(dice_roll == 6){
-        for(int i = 0; i < 4; ++i){
-            if(pos_start_of_turn[i]<0){
+        for(int i = 0; i < 4; ++i)
+        {
+            if(pos_start_of_turn[i]<0)
+            {
                 return i;
             }
         }
         for(int i = 0; i < 4; ++i){
-            if(pos_start_of_turn[i]>=0 && pos_start_of_turn[i] != 99){
+            if(pos_start_of_turn[i]>=0 && pos_start_of_turn[i] != 99)
+            {
                 return i;
             }
         }
     } else {
         for(int i = 0; i < 4; ++i){
-            if(pos_start_of_turn[i]>=0 && pos_start_of_turn[i] != 99){
+            if(pos_start_of_turn[i]>=0 && pos_start_of_turn[i] != 99)
+            {
                 return i;
             }
         }
         for(int i = 0; i < 4; ++i){ //maybe they are all locked in
-            if(pos_start_of_turn[i]<0){
+            if(pos_start_of_turn[i]<0)
+            {
                 return i;
             }
         }
@@ -37,44 +54,74 @@ int ludo_evo_player::make_decision(){
     return -1;
 }
 
-
-
-
-
-
-
-
-
-
-//void ludo_evo_player::start_turn(positions_and_dice relative)
-//{
-//    pos_start_of_turn = relative.pos;
-//    dice_roll = relative.dice;
-//    int decision = make_decision();
-//    emit select_piece(decision);
-
-
-
-//}
-
-
-//void ludo_evo_player::post_game_analysis(std::vector<int> relative_pos)
-//{
-//    pos_end_of_turn = relative_pos;
-//    bool game_complete = true;
-//    for(int i = 0; i < 4; ++i){
-//        if(pos_end_of_turn[i] < 99){
-//            game_complete = false;
-//        }
-//    }
-//    emit turn_complete(game_complete);
-//}
-
-
-void ludo_evo_player::getPlayersPos() 
+void ludo_evo_player::debugPrint(possibleMoves debug)
 {
-	
+    std::cout << "piece " << debug.pieceNumber << std::endl;
+    std::cout << "defend " << debug.defend << std::endl;
+    std::cout << "finishPiece " << debug.finishPiece << std::endl;
+    std::cout << "killFoe " << debug.killFoe << std::endl;
+    std::cout << "leaveHouse " << debug.leaveHouse<< std::endl;
+    std::cout << "moveforward " << debug.moveforward << std::endl;
+    std::cout << "moveInGoal " << debug.moveInGoal << std::endl;
+    std::cout << "moveToGlobe " << debug.moveToGlobe << std::endl;
+    std::cout << "moveToGoal " << debug.moveToGoal << std::endl;
+    std::cout << "moveToStar " << debug.moveToStar << std::endl;
+
 }
+
+
+
+possibleMoves ludo_evo_player::exploration(int pieceNumber)
+{
+    int index = pieceNumber;
+    int endPosition = dice_roll + pos_start_of_turn[index];
+    possibleMoves currentPlayer;
+    currentPlayer.pieceNumber = pieceNumber;
+    currentPlayer.moveforward = posibleToMoveForward(index);
+    currentPlayer.killFoe = posibleToKill(index);
+    currentPlayer.defend = canIdefend(index);
+    currentPlayer.finishPiece = endPiece(index);
+    currentPlayer.moveInGoal = moveInFinish(index);
+    currentPlayer.moveToGlobe = posibleToMoveToGlobe(index);
+    currentPlayer.leaveHouse = leaveHomePossible(index);
+    currentPlayer.moveToStar = posibleToMoveToStar(index);
+
+    return currentPlayer;
+
+}
+
+
+
+
+
+
+
+void ludo_evo_player::start_turn(positions_and_dice relative)
+{
+    pos_start_of_turn = relative.pos;
+    dice_roll = relative.dice;
+    int decision = make_decision();
+    emit select_piece(decision);
+
+
+
+}
+
+
+void ludo_evo_player::post_game_analysis(std::vector<int> relative_pos)
+{
+    pos_end_of_turn = relative_pos;
+    bool game_complete = true;
+    for(int i = 0; i < 4; ++i){
+        if(pos_end_of_turn[i] < 99){
+            game_complete = false;
+        }
+    }
+    emit turn_complete(game_complete);
+}
+
+
+
 
 bool ludo_evo_player::posibleToMoveForward(int peiceNumber) 
 {
@@ -90,16 +137,7 @@ bool ludo_evo_player::posibleToMoveForward(int peiceNumber)
 
 
 
-  
-bool ludo_evo_player::isEnemyBehind(int peiceNumber)
-{
-}
 
-
-bool ludo_evo_player::isInGoal(int peiceNumber) 
-{
-	
-}
 
 
 bool ludo_evo_player::canIdefend(int peiceNumber)
@@ -115,6 +153,12 @@ bool ludo_evo_player::canIdefend(int peiceNumber)
 
 bool ludo_evo_player::canIenterBoard(int peiceNumber)
 {
+    if(pos_start_of_turn[peiceNumber] == -1 && dice_roll == 6)
+    {
+        return true;
+    }
+     return false;
+
 	
 }
 
@@ -126,6 +170,7 @@ bool ludo_evo_player::posibleToKill(int peiceNumber)
          return false;
      int noEnemies = oppenentOnfield(end_pos);
      if (noEnemies == 1)
+
          if (!(isGlobe(end_pos)))
             return true;
      return false;
@@ -134,13 +179,6 @@ bool ludo_evo_player::posibleToKill(int peiceNumber)
 	
 }
 
-bool ludo_evo_player::isPositionBlocked(int peiceNumber)
-{
-	
-	
-	
-	
-}
  
 
 
@@ -214,13 +252,12 @@ bool ludo_evo_player::friendlyOnfield(int position)
     
 bool ludo_evo_player:: posibleToMoveToGlobe(int peiceNumber)
 {
-    if (pos_start_of_turn[peiceNumber] == 99)
+    int end_pos = dice_roll + pos_start_of_turn[peiceNumber];
+        if (end_pos > 51)
+            return false;
+        if (isGlobe(end_pos))
+            return true;
         return false;
-    if (pos_start_of_turn[peiceNumber] == -1)
-        return false;
-    if (pos_start_of_turn[peiceNumber] + dice_roll > 51)
-        return false;
-    return true;
 
 	
 }
@@ -237,20 +274,66 @@ bool ludo_evo_player::isGlobe(int postion)
     }
     return false;
 
-
 } 
 
 
-void ludo_evo_player::randomizeWeight()
+bool ludo_evo_player::endPiece(int pieceIndex)
 {
-	for(int i =0; i < genes_weights.length(); i++)
-	{
-		genes_weights[i] = random(0,10); 
-	} 
-	
-	
-	
+    if(pos_start_of_turn[pieceIndex]+dice_roll == 56)
+    {
+        return true;
+    }
+    return false;
 }
+
+
+bool ludo_evo_player::isStar(int pieceIndex)
+{
+    if(pos_start_of_turn[pieceIndex] + dice_roll == 5 || pos_start_of_turn[pieceIndex] + dice_roll == 18 || pos_start_of_turn[pieceIndex] + dice_roll == 31 )
+    {
+        return true;
+    }
+    return false;
+
+
+}
+
+
+bool ludo_evo_player::posibleToMoveToStar(int peiceNumber)
+{
+    int end_pos = dice_roll + pos_start_of_turn[peiceNumber];
+       if (end_pos > 51)
+           return false;
+       bool star = isStar(end_pos);
+       //Check for block at the next star3
+       if (star)
+           end_pos = end_pos + 13;
+       if (end_pos > 51)
+           return false;
+       int noEnemies = oppenentOnfield(end_pos);
+       if (noEnemies > 0)
+           return false;
+
+       if (star)
+           return true;
+       return false;
+
+
+
+}
+
+
+
+//void ludo_evo_player::randomizeWeight()
+//{
+//    for(int i =0; i < genes_weights.length; i++)
+//	{
+//        genes_weights[i] = std::random(0,9);
+//	}
+	
+	
+	
+//}
 
 
 
