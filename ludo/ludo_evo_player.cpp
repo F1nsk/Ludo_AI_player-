@@ -52,7 +52,49 @@ int ludo_evo_player::make_decision()
         }
     }
     return -1;
+
+   // skal returne melle 0 og 3, også kalre spillet resten.
+
 }
+
+float ludo_evo_player::findHighScoreMove(possibleMoves player)
+{
+    std::vector<float>  tmp;  {
+        if (possibleMoves.killFoe == true)
+            {
+
+            temp.push_back(chrom.weightKillFoe);
+            }
+
+         if(possibleMoves.moveforward == true)
+            {
+                temp.push_back(chrom.weightMoveForward);
+            }
+
+         if(possibleMoves.moveToGlobe == true)
+            {
+                temp.push_back(chrom.weightMoveToGlobe);
+            }
+         if(possibleMoves.defend == true)
+            {
+                temp.push_back(chrom.weightDefend);
+            }
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
 
 void ludo_evo_player::debugPrint(possibleMoves debug)
 {
@@ -324,16 +366,38 @@ bool ludo_evo_player::posibleToMoveToStar(int peiceNumber)
 
 
 
-//void ludo_evo_player::randomizeWeight()
-//{
-//    for(int i =0; i < genes_weights.length; i++)
-//	{
-//        genes_weights[i] = std::random(0,9);
-//	}
+
+
+
+
+
+void ludo_evo_player::randomizeWeight()
+{
+
+
+
+    for(int i; i < 100; i ++)
+    {
+
+        chrom index;
+        index.weightKillFoe= rand() % 100;
+        index.weightMoveForward = rand() % 100;
+        index.weightMoveToGlobe = rand() % 100;
+        index.weightDefend = rand() % 100;
+        index.weightLeaveHouse = rand() % 100;
+        index.weightMoveToGoal = rand() % 100;
+        index.weightMoveImGoal = rand() % 100;
+        index.weightMoveToStar = rand() % 100;
+        index.weightFinishPiece = rand() % 100;
+
+        population.push_back(index);
+
+    }
 	
-	
-	
-//}
+
+
+}
+
 
 
 

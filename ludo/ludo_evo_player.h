@@ -27,8 +27,18 @@ struct possibleMoves
 
 };
 
-struct chrom
+struct chrom // the chromoson
 {
+    int numberOfWins = 0;
+    float weightKillFoe = 0.00;
+    float weightMoveForward = 0.00;
+    float weightMoveToGlobe = 0.00;
+    float weightDefend = 0.00;
+    float weightLeaveHouse = 0.00;
+    float weightMoveToGoal = 0.00;
+    float weightMoveImGoal = 0.00;
+    float weightMoveToStar = 0.00;
+    float weightFinishPiece = 0.00;
 
 
 
@@ -44,8 +54,8 @@ class ludo_evo_player: public QObject
 private:
 
 
-    char genes_weights[8];
-	void randomizeWeight(); 
+    possibleMoves
+    std::vector<chrom> population;
 
     std::vector<int> pos_start_of_turn;
     std::vector<int> pos_end_of_turn;
@@ -60,7 +70,12 @@ private:
     const int GOAL = 56;
     const int home = -1;
     std::vector<int> MyPiecesPos;                   //container for my pieces
-    std::vector<int> EnemyPiecesPos;                   //container for enemy pieces
+    std::vector<int> EnemyPiecesPos;//container for enemy pieces
+    std::vector<float> playerOne;
+    std::vector<float> playerTwo;
+    std::vector<float> playerThree;
+    std::vector<float> playFour;
+
 	
     
     // ************************************************************************************************
@@ -90,6 +105,11 @@ private:
     // ************************************************************************************************
     void debugPrint(possibleMoves debug);
    
+    // ************************************************************************************************
+    // Genetic algorithm  function
+    // ************************************************************************************************
+    void randomizeWeight();
+    float findHighScoreMove(possibleMoves player);
 	// ************************************************************************************************
 	// actions 
 	// ************************************************************************************************
