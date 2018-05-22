@@ -36,8 +36,6 @@ private:
             QThread::msleep(msecs);
         }
     }
-    std::vector<int> winners = {0,0,0,0};
-
 public:
     int color;
     std::vector<int> player_positions;
@@ -49,9 +47,7 @@ public:
     game();
     void setGameDelay(unsigned int mili_seconds){ game_delay = mili_seconds; }
     void reset();
-    void stats(int color);
-    void printStats();
-    signals:
+signals:
     void player1_start(positions_and_dice);
     void player2_start(positions_and_dice);
     void player3_start(positions_and_dice);
