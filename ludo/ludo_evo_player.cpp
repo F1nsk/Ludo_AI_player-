@@ -9,9 +9,22 @@ ludo_evo_player::ludo_evo_player():
     randomizeWeight();
 }
 
+float ludo_evo_player::findPlayerWithBestScore(std::vector<float> scores)
+{
+    float bestScore;
+    for (int i = 0; i < scores.size(); i++)
+        {
+       // std::cout<< "Best score of piece " << i << " valued at: " << scoreVector[i] << "\n";
+            if (scores[i] > bestScore)
+                bestScore = scores[i];
+        }
+
+    return bestScore;
+}
+
 int ludo_evo_player::make_decision()
 {
-       int temp = 0;
+       float temp = 0;
        possibleMoves p1 = exploration(0);
        possibleMoves p2 = exploration(1);
        possibleMoves p3 = exploration(2);
@@ -20,34 +33,30 @@ int ludo_evo_player::make_decision()
        float scoreTwo = findHighScoreMove(p2);
        float scoreThree = findHighScoreMove(p3);
        float scoreFour = findHighScoreMove(p4);
-    //    std::cout << " tmp "  << scoreThreer << std::endl;
-
-       for( int i = 0 ; i < 4 ; i++)
-       {
-           if (pos_start_of_turn[i] != endOFGoal);
-
-
-
-       }
-
-
+    //    std::cout << " tmp "  << scoreThreer << std::endl
        scoreKeeper = {scoreOne, scoreTwo, scoreThree, scoreFour};
 
 
+      temp = findPlayerWithBestScore(scoreKeeper);
 
+      if(scoreOne == temp)
+      {
+          return 0;
+      }
+      if (scoreTwo == temp)
+      {
 
+          return 1;
+      }
+      if (scoreThree == temp)
+      {
+          return 2;
+      }
+      if (scoreFour == temp )
+      {
+          return 3;
+      }
 
-       for(int i = 0; i < scoreKeeper.size(); i++)
-       {
-           std::cout << scoreOne << "  " << scoreTwo << "  " << scoreThree << "  " << scoreFour << std::endl;
-           if(scoreKeeper[i] > temp)
-           {
-               temp = scoreKeeper[i];
-
-           }
-       }
-
-       return temp;
 
 
 
@@ -76,7 +85,7 @@ int ludo_evo_player::make_decision()
 //            }
 //        }
 //    }
-  //  return -1;
+    return -1;
 }
 
 bool ludo_evo_player::inBase(int peiceIndex)
@@ -112,7 +121,7 @@ float ludo_evo_player::findHighScoreMove(possibleMoves player)
 //    }
 
    chromoson  = population[0];
-   debugPrintChromWeights(chromoson);
+
 
    // debugPrintChromWeights(chromoson);
    possibleMoves tempPlayer;

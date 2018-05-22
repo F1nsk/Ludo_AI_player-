@@ -98,6 +98,7 @@ private:
     // ************************************************************************************************
     void randomizeWeight();
     float findHighScoreMove(possibleMoves player);
+    float findPlayerWithBestScore(std::vector<float> scores);
 
 public:
     ludo_evo_player();
