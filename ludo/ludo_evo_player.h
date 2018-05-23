@@ -10,6 +10,7 @@
 #include <list>
 
 
+
 struct possibleMoves
 {
     int pieceNumber;   // posible moves for the peice with this index
@@ -58,6 +59,7 @@ struct sorter {
 class ludo_evo_player : public QObject {
     Q_OBJECT
 private:
+
     std::vector<chrom> population;
     std::vector<chrom> parentKeeper;
     int counter = 0;
@@ -113,8 +115,8 @@ private:
     float findHighScoreMove(possibleMoves player);
     float findPlayerWithBestScore(std::vector<float> scores);
     void  findChromWithBestScore();
-
-    void  mutation();
+    chrom timeForNewChildren();
+    void rebuildPopulation();
 
 
 

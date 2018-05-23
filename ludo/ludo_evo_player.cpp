@@ -134,11 +134,14 @@ void ludo_evo_player::debugPrintParents(chrom debug)
 }
 
 
-void ludo_evo_player::timeForNewChildren()
+chrom ludo_evo_player::timeForNewChildren()
 {
+
+    findChromWithBestScore();
     chrom parentOne =  parents[0];
     chrom parentTwo =  parents[1];
     chrom child;
+    child.numberOfWins = 0;
     int midCounter = 0;
 
     int midPoint = (rand() % 9) + 1; // radom midpoint between 1 and 9
@@ -146,23 +149,34 @@ void ludo_evo_player::timeForNewChildren()
 
         if( midCounter != midPoint )
         {
-           child.weightDefend =  parentOne.weightDefend;
+           child.weightKillFoe =  parentOne.weightKillFoe;
            midCounter += 1;
         }
         else
         {
-            child.weightDefend = parentTwo.weightDefend;
-            midCounter += 1
+            child.weightKillFoe = parentTwo.weightKillFoe;
+            midCounter += 1;
         }
 
         if( midCounter != midPoint )
         {
-           child.weightDefend =  parentOne.weightDefend;
+           child.weightMoveForward =  parentOne.weightMoveForward;
            midCounter += 1;
         }
         else
         {
-            child.weightDefend = parentTwo.weightDefend;
+            child.weightMoveForward = parentTwo.weightMoveForward;
+            midCounter += 1;
+        }
+
+        if( midCounter != midPoint )
+        {
+           child.weightMoveToGlobe =  parentOne.weightMoveToGlobe;
+           midCounter += 1;
+        }
+        else
+        {
+            child.weightMoveToGlobe = parentTwo.weightMoveToGlobe;
             midCounter += 1;
         }
 
@@ -179,34 +193,60 @@ void ludo_evo_player::timeForNewChildren()
 
         if( midCounter != midPoint )
         {
-           child.weightDefend =  parentOne.weightDefend;
+           child.weightLeaveHouse =  parentOne.weightLeaveHouse;
            midCounter += 1;
         }
         else
         {
-            child.weightDefend = parentTwo.weightDefend;
+            child.weightLeaveHouse = parentTwo.weightLeaveHouse;
             midCounter += 1;
         }
 
         if( midCounter != midPoint )
         {
-           child.weightDefend =  parentOne.weightDefend;
+           child.weightMoveToGoal =  parentOne.weightMoveToGoal;
            midCounter += 1;
         }
         else
         {
-            child.weightDefend = parentTwo.weightDefend;
+            child.weightMoveToGoal = parentTwo.weightMoveToGoal;
             midCounter += 1;
         }
+
 
         if( midCounter != midPoint )
         {
-           child.weightDefend =  parentOne.weightDefend;
+           child.weightMoveInGoal =  parentOne.weightMoveInGoal;
            midCounter += 1;
         }
         else
         {
-            child.weightDefend = parentTwo.weightDefend;
+            child.weightMoveInGoal = parentTwo.weightMoveInGoal;
+            midCounter += 1;
+        }
+
+
+
+        if( midCounter != midPoint )
+        {
+           child.weightMoveToStar =  parentOne.weightMoveToStar;
+           midCounter += 1;
+        }
+        else
+        {
+            child.weightMoveToStar = parentTwo.weightMoveToStar;
+            midCounter += 1;
+        }
+
+
+        if( midCounter != midPoint )
+        {
+           child.weightFinishPiece =  parentOne.weightFinishPiece;
+           midCounter += 1;
+        }
+        else
+        {
+            child.weightFinishPiece = parentTwo.weightFinishPiece;
             midCounter += 1;
         }
 
@@ -216,12 +256,27 @@ void ludo_evo_player::timeForNewChildren()
 
 
 
+return child;
 
 
+}
 
 
+void ludo_evo_player::rebuildPopulation()
+{
 
+    chrom child;
+   // std::cout << " here " << std::endl;
 
+    for(int i = 0; i < 100 ; i ++)
+    {
+
+    child = timeForNewChildren();
+    //std::cout << " here " << std::endl;
+
+    population.push_back(child);
+    std::cout << " making new pop " << std::endl;
+    }
 
 
 }
@@ -241,9 +296,9 @@ float ludo_evo_player::findHighScoreMove(possibleMoves player)
 
     chrom chromoson;
 
-   if(counter >= 20)
+   if(counter >= 5)
    {
-       debugPrintChromWeights(population[currentChromoson]);
+       //debugPrintChromWeights(population[currentChromoson]);
        currentChromoson = currentChromoson + 1;
        population[currentChromoson].numberOfWins = currentWinner;
        currentWinner =0;
@@ -252,11 +307,11 @@ float ludo_evo_player::findHighScoreMove(possibleMoves player)
    }
    if(currentChromoson >= 100)
    {
+
        currentChromoson = 0;
-       timeForNewChildren();
+       rebuildPopulation();
    }
    chromoson  = population[currentChromoson];
-
 
    // debugPrintChromWeights(chromoson);
    possibleMoves tempPlayer;
