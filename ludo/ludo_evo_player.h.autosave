@@ -100,6 +100,7 @@ private:
     void randomizeWeight();
     float findHighScoreMove(possibleMoves player);
     float findPlayerWithBestScore(std::vector<float> scores);
+    void findChromWithBestScore(); 
 
 
 public:

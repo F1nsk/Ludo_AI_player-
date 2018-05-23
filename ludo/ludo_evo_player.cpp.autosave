@@ -116,6 +116,25 @@ bool ludo_evo_player::inBase(int peiceIndex)
 
 }
 
+void ludo_evo_player::findChromWithBestScore()
+{
+    
+    for(int i < population.size() ; i++)
+    {
+        population[i].numberOfWins
+        
+        
+    }
+       
+    
+    
+    
+    
+}
+
+
+
+
 
 
 

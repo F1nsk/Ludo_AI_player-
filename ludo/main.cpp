@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
     ludo_player_random p3, p4;
 
     game g;
-    g.setGameDelay(010); //if you want to see the game, set a delay
+    g.setGameDelay(001); //if you want to see the game, set a delay
 
     // Add a GUI <-- remove the '/' to uncomment block
     Dialog w;
@@ -38,6 +38,7 @@ int main(int argc, char *argv[]){
     QObject::connect(&p1,SIGNAL(select_piece(int)),                &g, SLOT(movePiece(int)));
     QObject::connect(&g, SIGNAL(player1_end(std::vector<int>)),    &p1,SLOT(post_game_analysis(std::vector<int>)));
     QObject::connect(&p1,SIGNAL(turn_complete(bool)),              &g, SLOT(turnComplete(bool)));
+    QObject::connect(&g,SIGNAL (declare_winner(int)),              &p1, SLOT(gameCounter(int)));
 
     QObject::connect(&g, SIGNAL(player2_start(positions_and_dice)),&p2,SLOT(start_turn(positions_and_dice)));
     QObject::connect(&p2,SIGNAL(select_piece(int)),                &g, SLOT(movePiece(int)));
@@ -58,6 +59,7 @@ int main(int argc, char *argv[]){
         g.start();
         a.exec();
         g.reset();
+
     }
     return 0;
 }
