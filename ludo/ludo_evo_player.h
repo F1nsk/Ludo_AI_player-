@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <list>
 
+
 struct possibleMoves
 {
     int pieceNumber;   // posible moves for the peice with this index
@@ -47,12 +48,21 @@ struct chrom // the chromoson
 };
 
 
+struct sorter {
+  inline bool operator() (chrom& i, chrom& j) { return (i.numberOfWins<j.numberOfWins);}
+};
+
+
+
+
 class ludo_evo_player : public QObject {
     Q_OBJECT
 private:
     std::vector<chrom> population;
+    std::vector<chrom> parentKeeper;
     int counter = 0;
     int currentWinner = 0;
+    int numberOfGamesPlayed = 0;
     std::vector<int> pos_start_of_turn;
     std::vector<int> pos_end_of_turn;
     int dice_roll;
@@ -64,6 +74,7 @@ private:
     const int GOAL = 56;
     const int home = -1;
     std::vector<float> scoreKeeper;
+    std::vector<chrom> parents;
 
     // ************************************************************************************************
     // functions  to explore the board
@@ -93,6 +104,7 @@ private:
     // ************************************************************************************************
     void debugPrintPossibleMoves(possibleMoves debug);
     void debugPrintChromWeights(chrom debug);
+    void debugPrintParents(chrom debug);
 
     // ************************************************************************************************
     // Genetic algorithm  function
@@ -100,6 +112,11 @@ private:
     void randomizeWeight();
     float findHighScoreMove(possibleMoves player);
     float findPlayerWithBestScore(std::vector<float> scores);
+    void  findChromWithBestScore();
+
+    void  mutation();
+
+
 
 
 public:

@@ -26,15 +26,15 @@ float ludo_evo_player::findPlayerWithBestScore(std::vector<float> scores)
 
 void ludo_evo_player::gameCounter(int winner)
 {
+    std::cout << "winner is : " << winner << std::endl;
 
    if(winner == 0 )
    {
         currentWinner = currentWinner + 1;
    }
 
-    counter = counter +1;
-
-
+    numberOfGamesPlayed = numberOfGamesPlayed +1;
+    counter = counter + 1;
 
 }
 
@@ -76,33 +76,9 @@ int ludo_evo_player::make_decision()
 
 
 
-
-
-//    if(dice_roll == 6){
-//        for(int i = 0; i < 4; ++i){
-//            if(pos_start_of_turn[i]<0){
-//                return i;
-//            }
-//        }
-//        for(int i = 0; i < 4; ++i){
-//            if(pos_start_of_turn[i]>=0 && pos_start_of_turn[i] != 99){
-//                return i;
-//            }
-//        }
-//    } else {
-//        for(int i = 0; i < 4; ++i){
-//            if(pos_start_of_turn[i]>=0 && pos_start_of_turn[i] != 99){
-//                return i;
-//            }
-//        }
-//        for(int i = 0; i < 4; ++i){ //maybe they are all locked in
-//            if(pos_start_of_turn[i]<0){
-//                return i;
-//            }
-//        }
-//    }
     return -1;
-}
+
+ }
 
 bool ludo_evo_player::inBase(int peiceIndex)
 {
@@ -116,6 +92,48 @@ bool ludo_evo_player::inBase(int peiceIndex)
 
 }
 
+void ludo_evo_player::findChromWithBestScore()
+{
+
+
+
+    std::sort (population.begin(), population.end(), sorter());
+
+
+    parents.push_back(population[99]);
+    parents.push_back(population[98]);
+
+    debugPrintParents(parents[0]);
+    debugPrintParents(parents[1]);
+
+
+
+
+
+
+}
+
+void ludo_evo_player::debugPrintParents(chrom debug)
+{
+
+    std::cout << "win number " << debug.numberOfWins << std::endl;
+    std::cout << " Weight for defend " << debug.weightDefend << std::endl;
+    std::cout << " Weight for finishPiece " << debug.weightFinishPiece << std::endl;
+    std::cout << " Weight for killFoe " << debug.weightKillFoe << std::endl;
+    std::cout << " Weight for leaveHouse " << debug.weightLeaveHouse<< std::endl;
+    std::cout << " Weight for moveforward " << debug.weightMoveForward << std::endl;
+    std::cout << " Weight for moveInGoal " << debug.weightMoveInGoal << std::endl;
+    std::cout << " Weight for moveToGlobe " << debug.weightMoveToGlobe << std::endl;
+    std::cout << " Weight for moveToGoal " << debug.weightMoveToGoal << std::endl;
+    std::cout << " Weight for moveToStar " << debug.weightMoveToStar << std::endl;
+
+
+
+
+
+}
+
+
 
 
 
@@ -123,20 +141,14 @@ float ludo_evo_player::findHighScoreMove(possibleMoves player)
 {
 
 
-    int currentChromoson = 0;
+   static int currentChromoson = 0;
     std::vector<float>  temp;
 
     float bestMove = 0;
 
     chrom chromoson;
-//    for (int i = 0 ; i < 100; i++)
-//    {
-//        chromoson  = population[i];
-//        std::cout << " this is chrom nr " << i << std::endl;
-//        debugPrintChromWeights(chromoson);
-//    }
 
-   if(counter > 10)
+   if(counter >= 10)
    {
        currentChromoson = currentChromoson + 1;
        std::cout << " we changed Chrom to " << currentChromoson  << std::endl;
@@ -290,7 +302,6 @@ void ludo_evo_player::start_turn(positions_and_dice relative)
 
 }
 
-
 void ludo_evo_player::post_game_analysis(std::vector<int> relative_pos)
 {
     pos_end_of_turn = relative_pos;
@@ -406,14 +417,14 @@ bool ludo_evo_player::leaveHomePossible(int peiceNumber)
 
  bool ludo_evo_player::oppenentOnfield(int position)
  {
-     int counter = 0;
+     int tempcounter = 0;
     //bool skip = false;
     for (int i = 4; i < pos_start_of_turn.size(); i++)
     {
             if (pos_start_of_turn[i] == position)
-                counter++;
+                tempcounter++;
     }
-    return counter;
+    return tempcounter;
 
 
 }
@@ -422,13 +433,13 @@ bool ludo_evo_player::leaveHomePossible(int peiceNumber)
 
 bool ludo_evo_player::friendlyOnfield(int position)
 {
-     int counter = 0;
+     int tempcounter = 0;
     for (int i = 0; i < 4; i++)
     {
         if (pos_start_of_turn[i] == position)
-            counter++;
+            tempcounter++;
     }
-    return counter;
+    return tempcounter;
 }
 
 
