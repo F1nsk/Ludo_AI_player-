@@ -26,7 +26,7 @@ float ludo_evo_player::findPlayerWithBestScore(std::vector<float> scores)
 
 void ludo_evo_player::gameCounter(int winner)
 {
-    std::cout << "winner is : " << winner << std::endl;
+    //std::cout << "winner is : " << winner << std::endl;
 
    if(winner == 0 )
    {
@@ -134,6 +134,99 @@ void ludo_evo_player::debugPrintParents(chrom debug)
 }
 
 
+void ludo_evo_player::timeForNewChildren()
+{
+    chrom parentOne =  parents[0];
+    chrom parentTwo =  parents[1];
+    chrom child;
+    int midCounter = 0;
+
+    int midPoint = (rand() % 9) + 1; // radom midpoint between 1 and 9
+
+
+        if( midCounter != midPoint )
+        {
+           child.weightDefend =  parentOne.weightDefend;
+           midCounter += 1;
+        }
+        else
+        {
+            child.weightDefend = parentTwo.weightDefend;
+            midCounter += 1
+        }
+
+        if( midCounter != midPoint )
+        {
+           child.weightDefend =  parentOne.weightDefend;
+           midCounter += 1;
+        }
+        else
+        {
+            child.weightDefend = parentTwo.weightDefend;
+            midCounter += 1;
+        }
+
+        if( midCounter != midPoint )
+        {
+           child.weightDefend =  parentOne.weightDefend;
+           midCounter += 1;
+        }
+        else
+        {
+            child.weightDefend = parentTwo.weightDefend;
+            midCounter += 1;
+        }
+
+        if( midCounter != midPoint )
+        {
+           child.weightDefend =  parentOne.weightDefend;
+           midCounter += 1;
+        }
+        else
+        {
+            child.weightDefend = parentTwo.weightDefend;
+            midCounter += 1;
+        }
+
+        if( midCounter != midPoint )
+        {
+           child.weightDefend =  parentOne.weightDefend;
+           midCounter += 1;
+        }
+        else
+        {
+            child.weightDefend = parentTwo.weightDefend;
+            midCounter += 1;
+        }
+
+        if( midCounter != midPoint )
+        {
+           child.weightDefend =  parentOne.weightDefend;
+           midCounter += 1;
+        }
+        else
+        {
+            child.weightDefend = parentTwo.weightDefend;
+            midCounter += 1;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
 
 
 
@@ -148,15 +241,21 @@ float ludo_evo_player::findHighScoreMove(possibleMoves player)
 
     chrom chromoson;
 
-   if(counter >= 10)
+   if(counter >= 20)
    {
+       debugPrintChromWeights(population[currentChromoson]);
        currentChromoson = currentChromoson + 1;
-       std::cout << " we changed Chrom to " << currentChromoson  << std::endl;
+       population[currentChromoson].numberOfWins = currentWinner;
+       currentWinner =0;
        counter = 0;
 
    }
+   if(currentChromoson >= 100)
+   {
+       currentChromoson = 0;
+       timeForNewChildren();
+   }
    chromoson  = population[currentChromoson];
-   population[currentChromoson].numberOfWins = currentWinner;
 
 
    // debugPrintChromWeights(chromoson);
@@ -248,17 +347,18 @@ void ludo_evo_player::debugPrintPossibleMoves(possibleMoves debug)
 
 void ludo_evo_player::debugPrintChromWeights(chrom debug)
 {
-    std::cout << "win number " << debug.numberOfWins << std::endl;
-    std::cout << " Weight for defend " << debug.weightDefend << std::endl;
-    std::cout << " Weight for finishPiece " << debug.weightFinishPiece << std::endl;
-    std::cout << " Weight for killFoe " << debug.weightKillFoe << std::endl;
-    std::cout << " Weight for leaveHouse " << debug.weightLeaveHouse<< std::endl;
-    std::cout << " Weight for moveforward " << debug.weightMoveForward << std::endl;
-    std::cout << " Weight for moveInGoal " << debug.weightMoveInGoal << std::endl;
-    std::cout << " Weight for moveToGlobe " << debug.weightMoveToGlobe << std::endl;
-    std::cout << " Weight for moveToGoal " << debug.weightMoveToGoal << std::endl;
-    std::cout << " Weight for moveToStar " << debug.weightMoveToStar << std::endl;
+//    std::cout << "win number " << debug.numberOfWins << std::endl;
+//    std::cout << " Weight for defend " << debug.weightDefend << std::endl;
+//    std::cout << " Weight for finishPiece " << debug.weightFinishPiece << std::endl;
+//    std::cout << " Weight for killFoe " << debug.weightKillFoe << std::endl;
+//    std::cout << " Weight for leaveHouse " << debug.weightLeaveHouse<< std::endl;
+//    std::cout << " Weight for moveforward " << debug.weightMoveForward << std::endl;
+//    std::cout << " Weight for moveInGoal " << debug.weightMoveInGoal << std::endl;
+//    std::cout << " Weight for moveToGlobe " << debug.weightMoveToGlobe << std::endl;
+//    std::cout << " Weight for moveToGoal " << debug.weightMoveToGoal << std::endl;
+//    std::cout << " Weight for moveToStar " << debug.weightMoveToStar << std::endl;
 
+    std::cout << debug.numberOfWins << "  " <<   debug.weightDefend << "  " << debug.weightFinishPiece << "  " << debug.weightLeaveHouse << "  " << debug.weightMoveForward << "  " << debug.weightMoveInGoal << "  " << debug.weightMoveToGlobe << "  " << debug.weightMoveToGoal << "   " <<   debug.weightMoveToGoal   << "  " <<  debug.weightMoveToStar << std::endl;
 
 
 
@@ -285,12 +385,6 @@ possibleMoves ludo_evo_player::exploration(int pieceNumber)
 
 }
 
-
-
-
-
-
-
 void ludo_evo_player::start_turn(positions_and_dice relative)
 {
     pos_start_of_turn = relative.pos;
@@ -314,9 +408,6 @@ void ludo_evo_player::post_game_analysis(std::vector<int> relative_pos)
     emit turn_complete(game_complete);
 }
 
-
-
-
 bool ludo_evo_player::posibleToMoveForward(int peiceNumber)
 {
   if (pos_start_of_turn[peiceNumber] == 99)
@@ -328,11 +419,6 @@ bool ludo_evo_player::posibleToMoveForward(int peiceNumber)
     return true;
 
 }
-
-
-
-
-
 
 bool ludo_evo_player::canIdefend(int peiceNumber)
 {
@@ -373,9 +459,6 @@ bool ludo_evo_player::posibleToKill(int peiceNumber)
 
 }
 
-
-
-
 bool ludo_evo_player::moveToFinish(int peiceNumber)
 {
       int end_pos = dice_roll + pos_start_of_turn[peiceNumber];
@@ -385,11 +468,6 @@ bool ludo_evo_player::moveToFinish(int peiceNumber)
         return true;
     return false;
 }
-
-
-
-
-
 
 bool ludo_evo_player::moveInFinish(int peiceNumber)
 {
@@ -406,7 +484,6 @@ bool ludo_evo_player::moveInFinish(int peiceNumber)
 
 }
 
-
 bool ludo_evo_player::leaveHomePossible(int peiceNumber)
 {
     if (pos_start_of_turn[peiceNumber] == -1 && dice_roll == 6)
@@ -414,8 +491,7 @@ bool ludo_evo_player::leaveHomePossible(int peiceNumber)
     return false;
 }
 
-
- bool ludo_evo_player::oppenentOnfield(int position)
+bool ludo_evo_player::oppenentOnfield(int position)
  {
      int tempcounter = 0;
     //bool skip = false;
@@ -429,8 +505,6 @@ bool ludo_evo_player::leaveHomePossible(int peiceNumber)
 
 }
 
-
-
 bool ludo_evo_player::friendlyOnfield(int position)
 {
      int tempcounter = 0;
@@ -441,8 +515,6 @@ bool ludo_evo_player::friendlyOnfield(int position)
     }
     return tempcounter;
 }
-
-
 
 bool ludo_evo_player:: posibleToMoveToGlobe(int peiceNumber)
 {
@@ -455,7 +527,6 @@ bool ludo_evo_player:: posibleToMoveToGlobe(int peiceNumber)
 
 
 }
-
 
 bool ludo_evo_player::isGlobe(int postion)
 {
@@ -470,7 +541,6 @@ bool ludo_evo_player::isGlobe(int postion)
 
 }
 
-
 bool ludo_evo_player::endPiece(int pieceIndex)
 {
     if(pos_start_of_turn[pieceIndex]+dice_roll == 56)
@@ -479,7 +549,6 @@ bool ludo_evo_player::endPiece(int pieceIndex)
     }
     return false;
 }
-
 
 bool ludo_evo_player::isStar(int pieceIndex)
 {
@@ -491,7 +560,6 @@ bool ludo_evo_player::isStar(int pieceIndex)
 
 
 }
-
 
 bool ludo_evo_player::posibleToMoveToStar(int peiceNumber)
 {
@@ -515,13 +583,6 @@ bool ludo_evo_player::posibleToMoveToStar(int peiceNumber)
 
 
 }
-
-
-
-
-
-
-
 
 void ludo_evo_player::randomizeWeight()
 {
