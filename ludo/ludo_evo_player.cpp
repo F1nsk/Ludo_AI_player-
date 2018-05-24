@@ -30,13 +30,17 @@ void ludo_evo_player::gameCounter(int winner)
 
    if(winner == 0 )
    {
-        currentWinner = currentWinner + 1;
+        currentWinner += 1;
+        genWins +=1;
+
    }
 
-    numberOfGamesPlayed = numberOfGamesPlayed +1;
-    counter = counter + 1;
+    numberOfGamesPlayed  +=1;
+    counter  += 1;
 
 }
+
+
 
 int ludo_evo_player::make_decision()
 {
@@ -100,11 +104,13 @@ void ludo_evo_player::findChromWithBestScore()
     std::sort (population.begin(), population.end(), sorter());
 
 
+
     parents.push_back(population[99]);
     parents.push_back(population[98]);
+    population.clear();
 
-    debugPrintParents(parents[0]);
-    debugPrintParents(parents[1]);
+//    debugPrintParents(parents[0]);
+//    debugPrintParents(parents[1]);
 
 
 
@@ -134,15 +140,26 @@ void ludo_evo_player::debugPrintParents(chrom debug)
 }
 
 
-chrom ludo_evo_player::timeForNewChildren()
+void ludo_evo_player::timeForNewChildren()
 {
 
+
     findChromWithBestScore();
-    chrom parentOne =  parents[0];
-    chrom parentTwo =  parents[1];
+    parentOne =  parents[0];
+    parentTwo =  parents[1];
+    parents.clear();
+    std::cout << "==========parents  ================================================================================== " << std::endl;
+    debugPrintChromWeights(parentOne);
+    debugPrintChromWeights(parentTwo);
+
+
     chrom child;
     child.numberOfWins = 0;
+    for(int i = 0; i < number_children ; i ++)
+    {
+
     int midCounter = 0;
+
 
     int midPoint = (rand() % 9) + 1; // radom midpoint between 1 and 9
 
@@ -252,11 +269,40 @@ chrom ludo_evo_player::timeForNewChildren()
 
 
 
+            population.push_back(child);
+        }
+
+//    std::cout << "==========wiht mutated pop================================================================================== " << std::endl;
+//        debugPrintPopulation(population);
+//        std::cout << "============================================================================================ " << std::endl;
+
+    for(int i = 0; i < number_random_children ; i ++)
+    {
+
+
+        chrom index;
+        index.weightKillFoe= rand() % 100;
+        index.weightMoveForward = rand() % 100;
+        index.weightMoveToGlobe = rand() % 100;
+        index.weightDefend = rand() % 100;
+        index.weightLeaveHouse = rand() % 100;
+        index.weightMoveToGoal = rand() % 100;
+        index.weightMoveInGoal = rand() % 100;
+        index.weightMoveToStar = rand() % 100;
+        index.weightFinishPiece = rand() % 100;
+
+        population.push_back(index);
 
 
 
+    }
 
-return child;
+//    std::cout << "==========with mutated pop================================================================================== " << std::endl;
+//        debugPrintPopulation(population);
+//        std::cout << "============================================================================================ " << std::endl;
+
+
+
 
 
 }
@@ -265,19 +311,29 @@ return child;
 void ludo_evo_player::rebuildPopulation()
 {
 
-    chrom child;
+     genCounter += 1;
+     std::cout << " generation number " << genCounter  << "  number of wins " << genWins << std::endl;
+
    // std::cout << " here " << std::endl;
+     genWins = 0;
 
-    for(int i = 0; i < 100 ; i ++)
-    {
 
-    child = timeForNewChildren();
-    //std::cout << " here " << std::endl;
 
-    population.push_back(child);
-    std::cout << " making new pop " << std::endl;
-    }
+    timeForNewChildren();
 
+
+
+
+
+
+
+   // st:cout << " making new pop " << std::endl;
+
+
+
+//    std::cout << "==========next pop================================================================================== " << std::endl;
+//    debugPrintPopulation(population);
+//    std::cout << "============================================================================================ " << std::endl;
 
 }
 
@@ -296,7 +352,7 @@ float ludo_evo_player::findHighScoreMove(possibleMoves player)
 
     chrom chromoson;
 
-   if(counter >= 5)
+   if(counter >= number_of_games_with_chrom) //  for changing chromoson
    {
        //debugPrintChromWeights(population[currentChromoson]);
        currentChromoson = currentChromoson + 1;
@@ -305,13 +361,18 @@ float ludo_evo_player::findHighScoreMove(possibleMoves player)
        counter = 0;
 
    }
-   if(currentChromoson >= 100)
+   if(currentChromoson >= population_size) // loop for changing population
    {
-
-       currentChromoson = 0;
+       std::cout << " evolution "<< std::endl;
        rebuildPopulation();
+       currentChromoson = 0;
+
+
+
    }
    chromoson  = population[currentChromoson];
+
+
 
    // debugPrintChromWeights(chromoson);
    possibleMoves tempPlayer;
@@ -379,8 +440,15 @@ float ludo_evo_player::findHighScoreMove(possibleMoves player)
 
 
 
+void ludo_evo_player::debugPrintPopulation(std::vector<chrom> debug)
+{
+    for(int i = 0; i < debug.size() ; i++ )
+    {
+    std::cout << debug[i].numberOfWins << "  " <<   debug[i].weightDefend << "  " << debug[i].weightFinishPiece << "  " << debug[i].weightLeaveHouse << "  " << debug[i].weightMoveForward << "  " << debug[i].weightMoveInGoal << "  " << debug[i].weightMoveToGlobe << "  " << debug[i].weightMoveToGoal << "   " <<   debug[i].weightMoveToGoal   << "  " <<  debug[i].weightMoveToStar << std::endl;
+    }
 
 
+}
 
 
 
@@ -644,7 +712,7 @@ void ludo_evo_player::randomizeWeight()
 
 
 
-    for(int i = 0; i < 100; i ++)
+    for(int i = 0; i < population_size ; i ++)
     {
 
 
@@ -661,7 +729,15 @@ void ludo_evo_player::randomizeWeight()
 
         population.push_back(index);
 
+
+
     }
+
+//    std::cout << "==========First pop================================================================================== " << std::endl;
+//    debugPrintPopulation(population);
+
+//    std::cout << "============================================================================================ " << std::endl;
+
 
 
 

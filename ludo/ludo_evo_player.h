@@ -11,6 +11,10 @@
 
 
 
+
+
+
+
 struct possibleMoves
 {
     int pieceNumber;   // posible moves for the peice with this index
@@ -60,11 +64,17 @@ class ludo_evo_player : public QObject {
     Q_OBJECT
 private:
 
+    const int  population_size = 100;
+    const int number_of_games_with_chrom = 20;
+    const int number_children = 100;
+    const int number_random_children = 0;
     std::vector<chrom> population;
     std::vector<chrom> parentKeeper;
     int counter = 0;
     int currentWinner = 0;
     int numberOfGamesPlayed = 0;
+    int genCounter = 0;
+    int genWins = 0 ;
     std::vector<int> pos_start_of_turn;
     std::vector<int> pos_end_of_turn;
     int dice_roll;
@@ -77,6 +87,8 @@ private:
     const int home = -1;
     std::vector<float> scoreKeeper;
     std::vector<chrom> parents;
+    chrom parentOne;
+    chrom parentTwo;
 
     // ************************************************************************************************
     // functions  to explore the board
@@ -107,6 +119,7 @@ private:
     void debugPrintPossibleMoves(possibleMoves debug);
     void debugPrintChromWeights(chrom debug);
     void debugPrintParents(chrom debug);
+    void debugPrintPopulation(std::vector<chrom> debug);
 
     // ************************************************************************************************
     // Genetic algorithm  function
@@ -115,7 +128,7 @@ private:
     float findHighScoreMove(possibleMoves player);
     float findPlayerWithBestScore(std::vector<float> scores);
     void  findChromWithBestScore();
-    chrom timeForNewChildren();
+    void timeForNewChildren();
     void rebuildPopulation();
 
 

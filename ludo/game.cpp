@@ -408,7 +408,7 @@ void game::resetCnt()
 
 void game::run()
 {
-    for(int i = 0; i < 4000; i++)
+    for(int i = 0; i < 400000000; i++)
     {
         start();
         while(!game_complete)
